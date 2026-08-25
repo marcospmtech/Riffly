@@ -18,6 +18,12 @@ if (!fs.existsSync(PASTA_UPLOADS)) {
     fs.mkdirSync(PASTA_UPLOADS);
 }
 
+const PASTA_DB = path.join(RAIZ_DO_SITE, 'db');
+
+if (!fs.existsSync(PASTA_DB)) {
+    fs.mkdirSync(PASTA_DB);
+}
+
 const db = new DatabaseSync(CAMINHO_BANCO);
 const dbCifras = new DatabaseSync(CAMINHO_BANCO_CIFRAS);
 
