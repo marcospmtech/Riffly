@@ -1,6 +1,3 @@
-// Busca com sugestões: fica na barra de pesquisa de TODAS as páginas (o próprio
-// header é igual em todo lugar). Digita, espera um pouquinho, busca no backend
-// e mostra uma lista clicável embaixo do campo.
 document.addEventListener('DOMContentLoaded', function () {
     var input = document.getElementById('search');
     var resultsEl = document.getElementById('searchResults');
@@ -9,9 +6,9 @@ document.addEventListener('DOMContentLoaded', function () {
         return;
     }
 
-    var DEBOUNCE_MS = 300; // espera a pessoa parar de digitar antes de buscar
+    var DEBOUNCE_MS = 300;
     var debounceTimer = null;
-    var requisicaoAtual = 0; // evita que uma resposta antiga e lenta sobrescreva uma mais nova
+    var requisicaoAtual = 0;
 
     function limparResultados() {
         resultsEl.innerHTML = '';
@@ -62,15 +59,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 return resposta.json();
             })
             .then(function (cifras) {
-                // Se o usuário já digitou mais coisa desde que essa busca começou,
-                // essa resposta está desatualizada — ignora.
                 if (idDaRequisicao !== requisicaoAtual) {
                     return;
                 }
                 mostrarResultados(cifras);
             })
             .catch(function () {
-                // Sem servidor/rede: não mostra erro nenhum, só não abre a lista.
                 limparResultados();
             });
     }
@@ -90,8 +84,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }, DEBOUNCE_MS);
     });
 
-    // Fecha a lista se clicar fora dela (mas não some se clicar em algo dentro,
-    // pra não fechar antes do navegador conseguir seguir o link clicado).
     document.addEventListener('click', function (event) {
         var cliqueDentro = input.contains(event.target) || resultsEl.contains(event.target);
         if (!cliqueDentro) {

@@ -70,9 +70,6 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
 
-        // Se a URL vier com ?afinacao=drop-c (o botão "Ir para o afinador" da
-        // página de cifra monta esse link), já seleciona essa afinação sozinho,
-        // sem precisar a pessoa abrir a aba lateral e clicar de novo.
         var afinacaoNaUrl = new URLSearchParams(window.location.search).get('afinacao');
         if (afinacaoNaUrl) {
             var opcaoCorrespondente = document.querySelector('.tuning-option[data-tuning="' + afinacaoNaUrl + '"]');
@@ -82,9 +79,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    // Se a pessoa logada for administrador (salvo no localStorage pelo auth.js
-    // depois do login), acrescenta o link "Administrador" na barra lateral.
-    // Não mexe em nada se não tiver ninguém logado ou não for admin.
     function mostrarLinkDeAdministradorSeForOCaso() {
         var sidebarLista = document.querySelector('#sidebar ul');
         if (!sidebarLista) {
@@ -100,7 +94,7 @@ document.addEventListener('DOMContentLoaded', function () {
         try {
             usuario = JSON.parse(usuarioSalvo);
         } catch (erro) {
-            return; // localStorage corrompido/adulterado — ignora em vez de quebrar a página
+            return;
         }
 
         if (usuario.cargo !== 'admin') {

@@ -1,5 +1,3 @@
-// Cadastro e login: envia os formulários pro backend Node (server/server.js)
-// via fetch, e mostra a mensagem de erro embaixo do campo certo.
 document.addEventListener('DOMContentLoaded', function () {
     var loginForm = document.getElementById('loginForm');
     var registroForm = document.getElementById('registroForm');
@@ -13,8 +11,6 @@ document.addEventListener('DOMContentLoaded', function () {
     function mostrarErro(form, campo, mensagem) {
         limparErros(form);
 
-        // O servidor diz de qual campo é o erro (ex: "email"). Se por algum
-        // motivo ele não disser, cai no primeiro campo de erro do formulário.
         var alvo = campo ? form.querySelector('[data-error-for="' + campo + '"]') : null;
         if (!alvo) {
             alvo = form.querySelector('.field-error');
@@ -52,8 +48,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     aoDarCerto(resultado.corpo);
                 })
                 .catch(function () {
-                    // Servidor Node não está rodando, ou não tem rede — não tem campo
-                    // específico pra culpar, então a mensagem cai no primeiro campo.
+
                     mostrarErro(form, null, 'Não foi possível conectar ao servidor.');
                 });
         });
@@ -61,10 +56,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if (loginForm) {
         enviarFormulario(loginForm, '/api/login', function (corpo) {
-            // Guarda quem é a pessoa logada no navegador (localStorage sobrevive a
-            // fechar a aba/o navegador). Não é uma sessão de servidor de verdade,
-            // é só o que a gente precisa agora pra saber se mostra "Administrador"
-            // na barra lateral — outras páginas leem isso no main.js.
+
             localStorage.setItem('rifflyUsuario', JSON.stringify({
                 nome: corpo.nome,
                 cargo: corpo.cargo
