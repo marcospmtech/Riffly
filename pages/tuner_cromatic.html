@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Riffly - Afinador Cromático</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/tuner_cromatic.css">
+    <link rel="shortcut icon" href="../assets/design/logo/logo.png" type="image/x-icon">
+
+    <link rel="manifest" href="../manifest.json">
+    <meta name="theme-color" content="#5B21B6">
+    <link rel="apple-touch-icon" href="../assets/design/logo/logo.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Riffly">
+</head>
+<body>
+    <header>
+        <a href="../index.html"><img src="../assets/design/logo/logo.png" alt="Riffly" class="header-logo"></a>
+
+        <div class="search-wrapper">
+            <input type="search" name="search" id="search" class="search-bar" placeholder="Pesquise por uma música..." autocomplete="off">
+            <img src="../assets/design/icon/search.png" alt="" class="search-icon">
+            <ul class="search-results" id="searchResults"></ul>
+        </div>
+
+        <button class="app-select-btn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="sidebar" aria-label="Selecionar aplicativo">
+            <img src="../assets/design/icon/menu.png" alt="Menu">
+        </button>
+    </header>
+
+    <aside class="sidebar" id="sidebar">
+        <ul>
+            <li><a href="tuner_cromatic.html">Afinador Cromático</a></li>
+            <li><a href="tuner_manual.html">Afinador Manual</a></li>
+            <li><a href="metronome.html">Metrônomo</a></li>
+            <li><a href="login.html">Fazer login</a></li>
+        </ul>
+    </aside>
+
+    <main class="page tuner-page">
+        <div class="tuner-note" id="tunerNote">&ndash;</div>
+
+        <p class="tuner-status" id="tunerStatus">Aguardando permissão do microfone...</p>
+
+        <div class="tuner-ticks">
+            <span></span>
+            <span></span>
+            <span class="mid"></span>
+            <span></span>
+            <span></span>
+        </div>
+
+        <div class="tuner-needle">
+            <div class="tuner-needle-line"></div>
+            <div class="tuner-needle-ball"></div>
+        </div>
+
+        <div class="note-select">
+            <span data-note="A">A</span>
+            <span data-note="A#">A#</span>
+            <span data-note="B">B</span>
+            <span data-note="C">C</span>
+            <span data-note="C#">C#</span>
+            <span data-note="D">D</span>
+            <span data-note="D#">D#</span>
+            <span data-note="E">E</span>
+            <span data-note="F">F</span>
+            <span data-note="F#">F#</span>
+            <span data-note="G">G</span>
+            <span data-note="G#">G#</span>
+        </div>
+    </main>
+
+    <script src="../js/main.js" defer></script>
+    <script src="../js/search.js" defer></script>
+    <script src="../js/pitch-detection.js" defer></script>
+    <script src="../js/tuner.js" defer></script>
+</body>
+</html>

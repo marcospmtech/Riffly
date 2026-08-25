@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Riffly - Afinador Manual</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/tuner_manual.css">
+    <link rel="shortcut icon" href="../assets/design/logo/logo.png" type="image/x-icon">
+
+    <link rel="manifest" href="../manifest.json">
+    <meta name="theme-color" content="#5B21B6">
+    <link rel="apple-touch-icon" href="../assets/design/logo/logo.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Riffly">
+</head>
+<body>
+    <header>
+        <a href="../index.html"><img src="../assets/design/logo/logo.png" alt="Riffly" class="header-logo"></a>
+
+        <div class="search-wrapper">
+            <input type="search" name="search" id="search" class="search-bar" placeholder="Pesquise por uma música..." autocomplete="off">
+            <img src="../assets/design/icon/search.png" alt="" class="search-icon">
+            <ul class="search-results" id="searchResults"></ul>
+        </div>
+
+        <button class="app-select-btn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="sidebar" aria-label="Selecionar aplicativo">
+            <img src="../assets/design/icon/menu.png" alt="Menu">
+        </button>
+    </header>
+
+    <aside class="sidebar" id="sidebar">
+        <ul>
+            <li><a href="tuner_cromatic.html">Afinador Cromático</a></li>
+            <li><a href="tuner_manual.html">Afinador Manual</a></li>
+            <li><a href="metronome.html">Metrônomo</a></li>
+            <li><a href="login.html">Fazer login</a></li>
+        </ul>
+    </aside>
+
+    <aside class="tuning-sidebar" id="tuningSidebar">
+        <h2 class="tuning-sidebar-title">Afinações</h2>
+        <ul>
+            <li>
+                <button type="button" class="tuning-option active" data-tuning="padrao" data-notes="E,A,D,G,B,E">
+                    Padrão
+                    <span class="tuning-notes">E A D G B E</span>
+                </button>
+            </li>
+            <li>
+                <button type="button" class="tuning-option" data-tuning="meio-tom-abaixo" data-notes="D#,G#,C#,F#,A#,D#">
+                    Meio tom abaixo
+                    <span class="tuning-notes">Eb Ab Db Gb Bb Eb</span>
+                </button>
+            </li>
+            <li>
+                <button type="button" class="tuning-option" data-tuning="um-tom-abaixo" data-notes="D,G,C,F,A,D">
+                    Um tom abaixo
+                    <span class="tuning-notes">D G C F A D</span>
+                </button>
+            </li>
+            <li>
+                <button type="button" class="tuning-option" data-tuning="drop-d" data-notes="D,A,D,G,B,E">
+                    Drop D
+                    <span class="tuning-notes">D A D G B E</span>
+                </button>
+            </li>
+            <li>
+                <button type="button" class="tuning-option" data-tuning="drop-c" data-notes="C,G,C,F,A,D">
+                    Drop C
+                    <span class="tuning-notes">C G C F A D</span>
+                </button>
+            </li>
+            <li>
+                <button type="button" class="tuning-option" data-tuning="open-g" data-notes="D,G,D,G,B,D">
+                    Open G
+                    <span class="tuning-notes">D G D G B D</span>
+                </button>
+            </li>
+            <li>
+                <button type="button" class="tuning-option" data-tuning="open-d" data-notes="D,A,D,F#,A,D">
+                    Open D
+                    <span class="tuning-notes">D A D F# A D</span>
+                </button>
+            </li>
+            <li>
+                <button type="button" class="tuning-option" data-tuning="dadgad" data-notes="D,A,D,G,A,D">
+                    DADGAD
+                    <span class="tuning-notes">D A D G A D</span>
+                </button>
+            </li>
+        </ul>
+    </aside>
+
+    <main class="page tuner-manual-page">
+        <button class="tuning-select" type="button" id="tuningToggle" aria-haspopup="true" aria-expanded="false" aria-controls="tuningSidebar" aria-label="Selecionar afinação">
+            <img src="../assets/design/icon/settings_tuner.png" alt="">
+        </button>
+
+        <p class="tuner-status" id="manualTunerStatus"></p>
+
+        <div class="tuner-type">
+            <div class="tuner-type-ticks">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <div class="tuner-type-needle" id="manualNeedle"></div>
+        </div>
+
+        <div class="strings">
+            <div class="string">
+                <div class="string-line" data-string-line="0"></div>
+                <button type="button" class="string-note" data-string="0" data-note="E">E</button>
+            </div>
+            <div class="string">
+                <div class="string-line" data-string-line="1"></div>
+                <button type="button" class="string-note" data-string="1" data-note="A">A</button>
+            </div>
+            <div class="string">
+                <div class="string-line" data-string-line="2"></div>
+                <button type="button" class="string-note" data-string="2" data-note="D">D</button>
+            </div>
+            <div class="string">
+                <div class="string-line" data-string-line="3"></div>
+                <button type="button" class="string-note" data-string="3" data-note="G">G</button>
+            </div>
+            <div class="string">
+                <div class="string-line" data-string-line="4"></div>
+                <button type="button" class="string-note" data-string="4" data-note="B">B</button>
+            </div>
+            <div class="string">
+                <div class="string-line" data-string-line="5"></div>
+                <button type="button" class="string-note" data-string="5" data-note="E">E</button>
+            </div>
+        </div>
+    </main>
+
+    <script src="../js/main.js" defer></script>
+    <script src="../js/search.js" defer></script>
+    <script src="../js/pitch-detection.js" defer></script>
+    <script src="../js/tuner-manual.js" defer></script>
+</body>
+</html>

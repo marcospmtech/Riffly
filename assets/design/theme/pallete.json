@@ -1,0 +1,22 @@
+{
+  "riffly": {
+    "brand": {
+      "purple": "#7C3AED",
+      "purpleDark": "#5B21B6"
+    },
+    "accent": {
+      "yellow": "#FBBF24"
+    },
+    "neutral": {
+      "background": "#0F0B1A",
+      "card": "#1C1626",
+      "border": "#2E2640",
+      "textPrimary": "#FFFFFF",
+      "textSecondary": "#A8A0B8"
+    },
+    "status": {
+      "inTune": "#22C55E",
+      "outOfTune": "#EF4444"
+    }
+  }
+}

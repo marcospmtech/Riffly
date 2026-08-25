@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Riffly - Administrador</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/administrador.css">
+    <link rel="shortcut icon" href="../assets/design/logo/logo.png" type="image/x-icon">
+
+    <link rel="manifest" href="../manifest.json">
+    <meta name="theme-color" content="#5B21B6">
+    <link rel="apple-touch-icon" href="../assets/design/logo/logo.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Riffly">
+</head>
+<body>
+    <header>
+        <a href="../index.html"><img src="../assets/design/logo/logo.png" alt="Riffly" class="header-logo"></a>
+
+        <div class="search-wrapper">
+            <input type="search" name="search" id="search" class="search-bar" placeholder="Pesquise por uma música..." autocomplete="off">
+            <img src="../assets/design/icon/search.png" alt="" class="search-icon">
+            <ul class="search-results" id="searchResults"></ul>
+        </div>
+
+        <button class="app-select-btn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="sidebar" aria-label="Selecionar aplicativo">
+            <img src="../assets/design/icon/menu.png" alt="Menu">
+        </button>
+    </header>
+
+    <aside class="sidebar" id="sidebar">
+        <ul>
+            <li><a href="tuner_cromatic.html">Afinador Cromático</a></li>
+            <li><a href="tuner_manual.html">Afinador Manual</a></li>
+            <li><a href="metronome.html">Metrônomo</a></li>
+            <li><a href="login.html">Fazer login</a></li>
+        </ul>
+    </aside>
+
+    <main class="page admin-page">
+        <form id="adminForm">
+            <div class="admin-row">
+                <div class="admin-field">
+                    <label for="title">Digite o Título</label>
+                    <input type="text" id="title" name="titulo">
+                </div>
+                <div class="admin-field">
+                    <label for="author">Digite o Autor</label>
+                    <input type="text" id="author" name="autor">
+                </div>
+                <div class="admin-field">
+                    <label for="album">Digite o Álbum</label>
+                    <input type="text" id="album" name="album">
+                </div>
+            </div>
+
+            <div class="admin-row">
+                <div class="admin-field">
+                    <label for="bpm">Digite o BPM</label>
+                    <input type="number" id="bpm" name="bpm">
+                </div>
+                <div class="admin-field">
+                    <label for="yt">Link do YouTube</label>
+                    <input type="url" id="yt" name="youtube">
+                </div>
+                <div class="admin-field">
+                    <label for="afinacao">Afinação</label>
+                    <select id="afinacao" name="afinacao">
+                        <option value="padrao">Padrão (E A D G B E)</option>
+                        <option value="meio-tom-abaixo">Meio tom abaixo (Eb Ab Db Gb Bb Eb)</option>
+                        <option value="um-tom-abaixo">Um tom abaixo (D G C F A D)</option>
+                        <option value="drop-d">Drop D (D A D G B E)</option>
+                        <option value="drop-c">Drop C (C G C F A D)</option>
+                        <option value="open-g">Open G (D G D G B D)</option>
+                        <option value="open-d">Open D (D A D F# A D)</option>
+                        <option value="dadgad">DADGAD (D A D G A D)</option>
+                    </select>
+                </div>
+            </div>
+
+            <label class="admin-upload" for="cifra-file">
+                <img src="../assets/design/icon/upload.svg" alt="" id="uploadIcon">
+                <span id="uploadText">Faça o upload da foto</span>
+                <img class="admin-upload-preview" id="uploadPreview" alt="" style="display: none;">
+                <input type="file" id="cifra-file" name="foto" accept="image/*">
+            </label>
+
+            <span class="field-error" id="adminError"></span>
+
+            <button class="auth-submit" type="submit">Salvar cifra</button>
+        </form>
+    </main>
+
+    <script src="../js/main.js" defer></script>
+    <script src="../js/search.js" defer></script>
+    <script src="../js/admin.js" defer></script>
+</body>
+</html>

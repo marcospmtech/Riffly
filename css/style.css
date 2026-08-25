@@ -1,0 +1,264 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+  --purple: #7C3AED;
+  --purple-dark: #5B21B6;
+
+  --accent: #FBBF24;
+
+  --background: #0F0B1A;
+  --card: #1C1626;
+  --border: #2E2640;
+  --text-primary: #FFFFFF;
+  --text-secondary: #A8A0B8;
+
+  --in-tune: #22C55E;
+  --out-of-tune: #EF4444;
+}
+
+body {
+    background-color: var(--background);
+    font-family: 'Inter', sans-serif;
+    color: var(--text-primary);
+    overflow-x: hidden;
+}
+
+html {
+    overflow-x: hidden;
+}
+
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--purple-dark);
+    padding: 10px 60px;
+    width: 100%;
+}
+
+.header-logo {
+    height: 72px;
+    width: 72px;
+    display: block;
+}
+
+.search-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-bar {
+    height: 40px;
+    width: 490px;
+    background-color: #FFFFFF;
+    border-radius: 22px;
+    border: none;
+    padding-left: 20px;
+    padding-right: 50px;
+    font-family: inherit;
+    font-size: 16px;
+    color: #1a1a1a;
+}
+
+.search-bar:focus {
+    outline: 2px solid var(--accent);
+}
+
+.search-icon {
+    position: absolute;
+    right: 14px;
+    height: 24px;
+    width: 24px;
+    pointer-events: none;
+}
+
+/* Lista de sugestões que aparece embaixo da busca (js/search.js controla o conteúdo) */
+.search-results {
+    display: none;
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    width: 100%;
+    background-color: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    list-style: none;
+    overflow: hidden;
+    z-index: 15;
+    max-height: 320px;
+    overflow-y: auto;
+}
+
+.search-results.open {
+    display: block;
+}
+
+.search-results li a {
+    display: block;
+    padding: 12px 20px;
+    color: var(--text-primary);
+    text-decoration: none;
+}
+
+.search-results li a:hover {
+    background-color: var(--purple);
+}
+
+.search-results li .search-result-titulo {
+    font-size: 16px;
+}
+
+.search-results li .search-result-autor {
+    display: block;
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.search-results li.search-result-vazio {
+    padding: 12px 20px;
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+.app-select-btn {
+    height: 64px;
+    width: 64px;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    display: block;
+}
+
+.app-select-btn img {
+    height: 64px;
+    width: 64px;
+    display: block;
+}
+
+.sidebar {
+    display: none;
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    width: 320px;
+    background-color: var(--card);
+    border-left: 1px solid var(--border);
+    z-index: 20;
+    padding-top: 100px;
+}
+
+.sidebar.open {
+    display: block;
+}
+
+.sidebar ul {
+    list-style: none;
+}
+
+.sidebar li a {
+    display: block;
+    padding: 20px 32px;
+    color: var(--text-primary);
+    text-decoration: none;
+    font-size: 22px;
+    border-bottom: 1px solid var(--border);
+}
+
+.sidebar li a:hover {
+    background-color: var(--purple);
+}
+
+.page {
+    max-width: 1920px;
+    margin: 0 auto;
+    min-height: calc(100vh - 92px);
+    position: relative;
+}
+
+@media (max-width: 1024px) {
+    header {
+        flex-wrap: wrap;
+        padding: 12px 24px;
+        row-gap: 12px;
+    }
+
+    .header-logo {
+        height: 56px;
+        width: 56px;
+    }
+
+    .search-wrapper {
+        order: 3;
+        width: 100%;
+    }
+
+    .search-bar {
+        width: 100%;
+    }
+
+    .app-select-btn,
+    .app-select-btn img {
+        height: 48px;
+        width: 48px;
+    }
+
+    .sidebar {
+        width: min(320px, 80vw);
+    }
+
+    .page {
+        min-height: calc(100vh - 140px);
+    }
+}
+
+@media (max-width: 600px) {
+    header {
+        padding: 10px 16px;
+    }
+
+    .header-logo {
+        height: 44px;
+        width: 44px;
+    }
+
+    .search-bar {
+        height: 36px;
+        font-size: 14px;
+        padding-left: 14px;
+        padding-right: 42px;
+    }
+
+    .search-icon {
+        height: 20px;
+        width: 20px;
+        right: 12px;
+    }
+
+    .app-select-btn,
+    .app-select-btn img {
+        height: 40px;
+        width: 40px;
+    }
+
+    .sidebar {
+        width: 85vw;
+        max-width: 280px;
+        padding-top: 80px;
+    }
+
+    .sidebar li a {
+        padding: 16px 24px;
+        font-size: 18px;
+    }
+
+    .page {
+        min-height: calc(100vh - 128px);
+    }
+}

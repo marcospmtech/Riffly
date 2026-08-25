@@ -1,0 +1,26 @@
+{
+    "name": "Riffly",
+    "short_name": "Riffly",
+    "description": "Afinador, metrônomo e cifras em um só lugar.",
+    "start_url": "/pages/tuner_cromatic.html",
+    "scope": "/",
+    "display": "standalone",
+    "orientation": "portrait-primary",
+    "background_color": "#0F0B1A",
+    "theme_color": "#5B21B6",
+    "lang": "pt-BR",
+    "icons": [
+        {
+            "src": "/assets/design/logo/logo.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "any"
+        },
+        {
+            "src": "/assets/design/logo/logo.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable"
+        }
+    ]
+}

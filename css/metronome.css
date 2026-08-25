@@ -1,0 +1,222 @@
+.metronome-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 80px 0 100px;
+    gap: 50px;
+}
+
+.beats {
+    display: flex;
+    gap: 26px;
+}
+
+.beat {
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    background-color: var(--card);
+    border: 2px solid var(--text-primary);
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+    font-family: 'Istok Web', sans-serif;
+    box-sizing: border-box;
+}
+
+.beat.active {
+    background-color: var(--accent);
+    color: var(--background);
+}
+
+.bpm {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.bpm-fade-top,
+.bpm-fade-bottom {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 60px;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.bpm-fade-top {
+    top: 0;
+    background: linear-gradient(var(--background), transparent);
+}
+
+.bpm-fade-bottom {
+    bottom: 0;
+    background: linear-gradient(transparent, var(--background));
+}
+
+.bpm-picker {
+    position: relative;
+    width: 220px;
+    height: 240px;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+}
+
+.bpm-picker::-webkit-scrollbar {
+    display: none;
+}
+
+.bpm-picker-track {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.bpm-picker-spacer {
+    flex-shrink: 0;
+    width: 100%;
+}
+
+.bpm-value {
+    height: 48px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    color: var(--text-secondary);
+    font-family: 'Inter', sans-serif;
+    scroll-snap-align: center;
+    cursor: pointer;
+    user-select: none;
+}
+
+.bpm-value.current {
+    font-size: 48px;
+    font-weight: bold;
+    color: var(--text-primary);
+    position: relative;
+}
+
+.bpm-value.current::before,
+.bpm-value.current::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 50px;
+    height: 1px;
+    background-color: var(--accent);
+}
+
+.bpm-value.current::before {
+    right: 100%;
+    margin-right: 14px;
+}
+
+.bpm-value.current::after {
+    left: 100%;
+    margin-left: 14px;
+}
+
+.start-button {
+    width: 220px;
+    height: 60px;
+    background-color: var(--accent);
+    color: var(--text-primary);
+    font-size: 40px;
+    font-family: 'Istok Web', sans-serif;
+    border: none;
+    border-radius: 16px;
+    cursor: pointer;
+}
+
+@media (max-width: 1024px) {
+    .metronome-page {
+        gap: 36px;
+        padding: 60px 20px 80px;
+    }
+
+    .beat {
+        width: 48px;
+        height: 48px;
+        font-size: 28px;
+    }
+
+    .bpm-picker {
+        width: 180px;
+    }
+
+    .bpm-value {
+        font-size: 22px;
+    }
+
+    .bpm-value.current {
+        font-size: 38px;
+    }
+
+    .bpm-value.current::before,
+    .bpm-value.current::after {
+        width: 32px;
+    }
+
+    .start-button {
+        width: 180px;
+        height: 52px;
+        font-size: 32px;
+    }
+}
+
+@media (max-width: 600px) {
+    .metronome-page {
+        gap: 24px;
+        padding: 50px 16px 60px;
+    }
+
+    .beats {
+        gap: 14px;
+    }
+
+    .beat {
+        width: 40px;
+        height: 40px;
+        font-size: 22px;
+    }
+
+    .bpm-picker {
+        width: 150px;
+        height: 200px;
+    }
+
+    .bpm-value {
+        font-size: 18px;
+    }
+
+    .bpm-value.current {
+        font-size: 30px;
+    }
+
+    .bpm-value.current::before,
+    .bpm-value.current::after {
+        width: 20px;
+    }
+
+    .bpm-value.current::before {
+        margin-right: 8px;
+    }
+
+    .bpm-value.current::after {
+        margin-left: 8px;
+    }
+
+    .start-button {
+        width: 160px;
+        height: 46px;
+        font-size: 24px;
+    }
+}

@@ -1,0 +1,295 @@
+.tuner-manual-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 32px;
+    padding: 40px 20px;
+}
+
+.tuning-select {
+    position: absolute;
+    left: 40px;
+    top: 40px;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    display: block;
+}
+
+.tuning-select img {
+    width: 84px;
+    height: 84px;
+    display: block;
+}
+
+.tuning-sidebar {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 360px;
+    background-color: var(--card);
+    border-right: 1px solid var(--border);
+    z-index: 20;
+    padding-top: 100px;
+    overflow-y: auto;
+}
+
+.tuning-sidebar.open {
+    display: block;
+}
+
+.tuning-sidebar-title {
+    font-size: 24px;
+    padding: 0 28px 20px;
+}
+
+.tuning-sidebar ul {
+    list-style: none;
+}
+
+.tuning-option {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    background: none;
+    border: none;
+    border-bottom: 1px solid var(--border);
+    padding: 16px 28px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 20px;
+    text-align: left;
+    color: var(--text-primary);
+}
+
+.tuning-option:hover {
+    background-color: var(--purple);
+}
+
+.tuning-option.active {
+    background-color: var(--purple-dark);
+}
+
+.tuning-notes {
+    margin-top: 4px;
+    font-size: 14px;
+    color: var(--text-secondary);
+    letter-spacing: 1px;
+}
+
+.tuner-status {
+    font-size: 16px;
+    color: var(--text-secondary);
+    min-height: 20px;
+}
+
+.tuner-type {
+    position: relative;
+    width: 460px;
+    height: 97.5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tuner-type-ticks {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 44px;
+}
+
+.tuner-type-ticks span {
+    width: 2px;
+    height: 44px;
+    background-color: var(--text-secondary);
+}
+
+.tuner-type-needle {
+    position: absolute;
+    left: 50%;
+    top: 0;
+    width: 5px;
+    height: 97.5px;
+    background-color: var(--accent);
+    border-radius: 32px;
+    transform: translateX(-50%);
+    transition: transform 0.15s linear, background-color 0.15s linear;
+}
+
+.tuner-type-needle.in-tune {
+    background-color: var(--in-tune);
+}
+
+.tuner-type-needle.out-of-tune {
+    background-color: var(--out-of-tune);
+}
+
+.strings {
+    display: flex;
+    gap: 60px;
+    align-items: flex-start;
+}
+
+.string {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.string-line {
+    width: 10px;
+    height: min(505px, 38vh);
+    background-color: #4B4358;
+    border-radius: 32px;
+}
+
+.string-line.in-tune {
+    background-color: var(--in-tune);
+}
+
+.string-line.out-of-tune {
+    background-color: var(--out-of-tune);
+}
+
+.string-note {
+    margin-top: 16px;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 3px solid var(--text-primary);
+    background-color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+    font-family: inherit;
+    color: #1a1a1a;
+    cursor: pointer;
+}
+
+.string-note.active {
+    background-color: var(--accent);
+    border-color: var(--accent);
+    color: var(--background);
+}
+
+@media (max-width: 1024px) {
+    .tuner-manual-page {
+        gap: 28px;
+        padding: 90px 20px 40px;
+    }
+
+    .tuning-select {
+        left: 20px;
+        top: 20px;
+    }
+
+    .tuning-select img {
+        width: 60px;
+        height: 60px;
+    }
+
+    .tuning-sidebar {
+        width: min(320px, 80vw);
+    }
+
+    .tuner-type {
+        width: min(400px, 90vw);
+    }
+
+    .strings {
+        gap: 24px;
+    }
+
+    .string-line {
+        height: min(320px, 42vh);
+        width: 8px;
+    }
+
+    .string-note {
+        width: 56px;
+        height: 56px;
+        font-size: 28px;
+    }
+}
+
+@media (max-width: 600px) {
+    .tuner-manual-page {
+        gap: 20px;
+        padding: 80px 12px 30px;
+    }
+
+    .tuner-status {
+        font-size: 13px;
+        padding: 0 16px;
+        text-align: center;
+    }
+
+    .tuning-select {
+        left: 12px;
+        top: 12px;
+    }
+
+    .tuning-select img {
+        width: 44px;
+        height: 44px;
+    }
+
+    .tuning-sidebar {
+        width: 85vw;
+        max-width: 300px;
+        padding-top: 80px;
+    }
+
+    .tuning-sidebar-title {
+        font-size: 20px;
+        padding: 0 20px 16px;
+    }
+
+    .tuning-option {
+        padding: 14px 20px;
+        font-size: 16px;
+    }
+
+    .tuning-notes {
+        font-size: 12px;
+    }
+
+    .tuner-type {
+        width: min(280px, 85vw);
+        height: 70px;
+    }
+
+    .tuner-type-ticks,
+    .tuner-type-ticks span {
+        height: 32px;
+    }
+
+    .tuner-type-needle {
+        height: 70px;
+    }
+
+    .strings {
+        gap: 10px;
+    }
+
+    .string-line {
+        height: min(200px, 38vh);
+        width: 6px;
+    }
+
+    .string-note {
+        margin-top: 10px;
+        width: 38px;
+        height: 38px;
+        font-size: 16px;
+        border-width: 2px;
+    }
+}

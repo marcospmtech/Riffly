@@ -1,0 +1,120 @@
+.auth-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 20px;
+}
+
+/* Card centralizado com o <form> dentro */
+.auth-card {
+    width: 100%;
+    max-width: 440px;
+    background-color: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 48px 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.auth-title {
+    font-size: 32px;
+    text-align: center;
+}
+
+.auth-field {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.auth-field label {
+    font-size: 16px;
+    color: var(--text-secondary);
+}
+
+.auth-field input {
+    height: 52px;
+    border-radius: 14px;
+    border: 1px solid var(--border);
+    background-color: var(--background);
+    color: var(--text-primary);
+    padding: 0 18px;
+    font-size: 16px;
+    font-family: inherit;
+}
+
+.auth-field input:focus {
+    outline: 2px solid var(--accent);
+    border-color: transparent;
+}
+
+/* Mensagem de erro embaixo do campo. min-height evita que o formulário "pule"
+   de tamanho quando o erro aparece/some (o espaço já existe, só fica vazio). */
+.field-error {
+    display: block;
+    min-height: 16px;
+    font-size: 13px;
+    color: var(--out-of-tune);
+}
+
+.auth-submit {
+    height: 52px;
+    background-color: var(--accent);
+    color: var(--background);
+    border: none;
+    border-radius: 14px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.auth-switch {
+    text-align: center;
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.auth-switch a {
+    color: var(--accent);
+    text-decoration: none;
+}
+
+.auth-switch a:hover {
+    text-decoration: underline;
+}
+
+/* ===== TABLET ===== */
+@media (max-width: 1024px) {
+    .auth-card {
+        padding: 40px 32px;
+    }
+}
+
+/* ===== CELULAR ===== */
+@media (max-width: 600px) {
+    .auth-page {
+        padding: 40px 16px;
+    }
+
+    .auth-card {
+        padding: 32px 24px;
+        border-radius: 18px;
+        gap: 18px;
+    }
+
+    .auth-title {
+        font-size: 26px;
+    }
+
+    .auth-field input {
+        height: 46px;
+        font-size: 15px;
+    }
+
+    .auth-submit {
+        height: 46px;
+        font-size: 16px;
+    }
+}
