@@ -5,7 +5,7 @@
 // (v1 -> v2 -> v3...). É o único jeito do navegador saber que precisa jogar fora
 // o cache antigo. Esquecer disso = ficar horas achando que seu código novo tem
 // bug, quando na verdade o navegador nem chegou a carregá-lo.
-var CACHE_NAME = 'riffly-cache-v15';
+var CACHE_NAME = 'riffly-cache-v16';
 
 // Lista de tudo que vale a pena deixar salvo localmente.
 var URLS_TO_CACHE = [

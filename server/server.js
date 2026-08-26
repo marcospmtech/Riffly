@@ -472,6 +472,41 @@ app.post('/api/cifras', upload.single('foto'), async function (req, res) {
 });
 
 
+app.get('/api/cifras', async function (req, res) {
+
+    var {
+        data: resultados,
+        error
+    } = await supabase
+
+        .from('cifras')
+
+        .select('id, titulo, autor')
+
+        .order('titulo');
+
+
+    if (error) {
+
+        console.error(
+            'Erro ao listar cifras:',
+            error
+        );
+
+        return res.status(500).json({
+
+            erro: 'Erro ao listar cifras.'
+
+        });
+
+    }
+
+
+    res.json(resultados || []);
+
+});
+
+
 app.get('/api/cifras/busca', async function (req, res) {
 
     var termo =
@@ -583,6 +618,120 @@ app.get('/api/cifras/:id', async function (req, res) {
 
 
     res.json(cifra);
+
+});
+
+
+app.delete('/api/cifras/:id', async function (req, res) {
+
+    var id =
+        parseInt(req.params.id, 10);
+
+
+    if (isNaN(id)) {
+
+        return res.status(400).json({
+
+            erro: 'Id inválido.'
+
+        });
+
+    }
+
+
+    var {
+        data: cifra,
+        error: erroBusca
+    } = await supabase
+
+        .from('cifras')
+
+        .select('foto_arquivo')
+
+        .eq('id', id)
+
+        .maybeSingle();
+
+
+    if (erroBusca) {
+
+        console.error(
+            'Erro ao buscar cifra pra excluir:',
+            erroBusca
+        );
+
+        return res.status(500).json({
+
+            erro: 'Erro ao excluir cifra.'
+
+        });
+
+    }
+
+
+    if (!cifra) {
+
+        return res.status(404).json({
+
+            erro: 'Cifra não encontrada.'
+
+        });
+
+    }
+
+
+    var {
+        error: erroExclusao
+    } = await supabase
+
+        .from('cifras')
+
+        .delete()
+
+        .eq('id', id);
+
+
+    if (erroExclusao) {
+
+        console.error(
+            'Erro ao excluir cifra:',
+            erroExclusao
+        );
+
+        return res.status(500).json({
+
+            erro: 'Erro ao excluir cifra.'
+
+        });
+
+    }
+
+
+    // A foto é guardada no bucket do Supabase como uma URL pública completa;
+    // só o nome do arquivo (último pedaço da URL) é o que o storage precisa
+    // pra saber o que apagar.
+    if (cifra.foto_arquivo) {
+
+        var nomeArquivo =
+            cifra.foto_arquivo.split('/').pop();
+
+
+        await supabase
+
+            .storage
+
+            .from('uploads')
+
+            .remove([nomeArquivo]);
+
+    }
+
+
+    res.json({
+
+        ok: true
+
+    });
 
 });
 

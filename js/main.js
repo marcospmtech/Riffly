@@ -80,8 +80,9 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function mostrarLinkDeAdministradorSeForOCaso() {
+        var sidebarAside = document.getElementById('sidebar');
         var sidebarLista = document.querySelector('#sidebar ul');
-        if (!sidebarLista) {
+        if (!sidebarAside || !sidebarLista) {
             return;
         }
 
@@ -107,6 +108,90 @@ document.addEventListener('DOMContentLoaded', function () {
         link.textContent = 'Administrador';
         item.appendChild(link);
         sidebarLista.appendChild(item);
+
+        montarSecaoDeExclusao(sidebarAside);
+    }
+
+    // Seção "Excluir música", só aparece pra admin (chamada de dentro da função
+    // acima, que já confirmou o cargo). Busca em /api/cifras (o mesmo endpoint
+    // usado no resto do site), preenche um <select> pesquisável e exclui via DELETE.
+    function montarSecaoDeExclusao(sidebarAside) {
+        var secao = document.createElement('div');
+        secao.className = 'sidebar-admin-section';
+        secao.innerHTML =
+            '<h3 class="sidebar-section-title">Excluir música</h3>' +
+            '<input type="text" id="deleteFiltro" class="sidebar-search-input" placeholder="Pesquisar música...">' +
+            '<select id="deleteSelect" class="sidebar-select" size="6"></select>' +
+            '<button type="button" id="deleteBtn" class="sidebar-delete-btn">Excluir música selecionada</button>' +
+            '<p class="field-error" id="deleteMsg"></p>';
+        sidebarAside.appendChild(secao);
+
+        var filtroInput = secao.querySelector('#deleteFiltro');
+        var selectEl = secao.querySelector('#deleteSelect');
+        var deleteBtn = secao.querySelector('#deleteBtn');
+        var msgEl = secao.querySelector('#deleteMsg');
+
+        function carregarMusicas() {
+            fetch('/api/cifras')
+                .then(function (resposta) { return resposta.json(); })
+                .then(function (cifras) {
+                    selectEl.innerHTML = '';
+                    cifras.forEach(function (cifra) {
+                        var opcao = document.createElement('option');
+                        opcao.value = cifra.id;
+                        opcao.textContent = cifra.autor ? (cifra.titulo + ' — ' + cifra.autor) : cifra.titulo;
+                        selectEl.appendChild(opcao);
+                    });
+                })
+                .catch(function () {
+                    msgEl.textContent = 'Não foi possível carregar as músicas.';
+                });
+        }
+
+        // Filtro simples: esconde (não remove) as opções que não batem com o texto
+        // digitado. "hidden" em <option> é respeitado pelos navegadores modernos.
+        filtroInput.addEventListener('input', function () {
+            var termo = filtroInput.value.trim().toLowerCase();
+            Array.prototype.forEach.call(selectEl.options, function (opcao) {
+                opcao.hidden = termo.length > 0 && opcao.textContent.toLowerCase().indexOf(termo) === -1;
+            });
+        });
+
+        deleteBtn.addEventListener('click', function () {
+            msgEl.textContent = '';
+
+            var idSelecionado = selectEl.value;
+            if (!idSelecionado) {
+                msgEl.textContent = 'Selecione uma música.';
+                return;
+            }
+
+            var nomeSelecionado = selectEl.options[selectEl.selectedIndex].textContent;
+            var confirmou = window.confirm('Excluir "' + nomeSelecionado + '"? Isso não pode ser desfeito.');
+            if (!confirmou) {
+                return;
+            }
+
+            fetch('/api/cifras/' + encodeURIComponent(idSelecionado), { method: 'DELETE' })
+                .then(function (resposta) {
+                    return resposta.json().then(function (corpo) {
+                        return { ok: resposta.ok, corpo: corpo };
+                    });
+                })
+                .then(function (resultado) {
+                    if (!resultado.ok) {
+                        msgEl.textContent = resultado.corpo.erro || 'Erro ao excluir.';
+                        return;
+                    }
+                    selectEl.options[selectEl.selectedIndex].remove();
+                    msgEl.textContent = 'Música excluída.';
+                })
+                .catch(function () {
+                    msgEl.textContent = 'Não foi possível conectar ao servidor.';
+                });
+        });
+
+        carregarMusicas();
     }
 
     setupSidebar('.app-select-btn', '#sidebar');

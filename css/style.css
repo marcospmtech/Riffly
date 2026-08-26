@@ -152,6 +152,7 @@ header {
     border-left: 1px solid var(--border);
     z-index: 20;
     padding-top: 100px;
+    overflow-y: auto;
 }
 
 .sidebar.open {
@@ -173,6 +174,77 @@ header {
 
 .sidebar li a:hover {
     background-color: var(--purple);
+}
+
+/* Seção "Excluir música", injetada via JS só pra usuários admin (main.js) */
+.sidebar-admin-section {
+    padding: 24px 32px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.sidebar-section-title {
+    font-size: 16px;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.sidebar-search-input {
+    height: 40px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background-color: var(--background);
+    color: var(--text-primary);
+    padding: 0 14px;
+    font-size: 14px;
+    font-family: inherit;
+}
+
+.sidebar-search-input:focus {
+    outline: 2px solid var(--accent);
+    border-color: transparent;
+}
+
+.sidebar-select {
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background-color: var(--background);
+    color: var(--text-primary);
+    font-size: 14px;
+    font-family: inherit;
+    padding: 6px;
+}
+
+.sidebar-select option {
+    padding: 6px 8px;
+}
+
+.sidebar-delete-btn {
+    height: 40px;
+    border-radius: 10px;
+    border: none;
+    background-color: var(--out-of-tune);
+    color: var(--text-primary);
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.sidebar-admin-section .field-error {
+    min-height: 0;
+    font-size: 12px;
+}
+
+/* Base da mensagem de erro em vermelho, usada em vários formulários do site
+   (login, cadastro, administrador, e agora também a seção de exclusão na sidebar) */
+.field-error {
+    display: block;
+    min-height: 16px;
+    font-size: 13px;
+    color: var(--out-of-tune);
 }
 
 .page {
