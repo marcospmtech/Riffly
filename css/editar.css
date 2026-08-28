@@ -1,0 +1,50 @@
+/* Barra de busca centralizada no topo da página, pra escolher qual música editar */
+.editar-busca-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 40px;
+}
+
+.editar-busca-wrapper {
+    width: 100%;
+    max-width: 520px;
+}
+
+.editar-busca-wrapper .search-bar {
+    width: 100%;
+}
+
+.editar-status {
+    text-align: center;
+    font-size: 18px;
+    transition: color 0.2s ease;
+}
+
+.editar-status.sucesso {
+    color: var(--in-tune);
+}
+
+/* "Alterações salvas." pisca uma vez pra confirmar visualmente que funcionou,
+   em vez de só trocar de cor silenciosamente. */
+@keyframes rifflyPopIn {
+    0% { transform: scale(0.9); opacity: 0; }
+    60% { transform: scale(1.04); opacity: 1; }
+    100% { transform: scale(1); }
+}
+
+.editar-status.sucesso:not(:empty) {
+    animation: rifflyPopIn 0.25s ease;
+}
+
+/* O formulário só aparece depois de escolher uma música na busca — entra
+   suave em vez de "estalar" na tela assim que os dados chegam. */
+#editarForm {
+    animation: rifflyFadeInUp 0.3s ease;
+}
+
+/* ===== CELULAR ===== */
+@media (max-width: 600px) {
+    .editar-busca-container {
+        margin-bottom: 24px;
+    }
+}

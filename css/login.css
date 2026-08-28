@@ -16,6 +16,12 @@
     display: flex;
     flex-direction: column;
     gap: 24px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+    transition: border-color 0.2s ease;
+}
+
+.auth-card:hover {
+    border-color: var(--purple);
 }
 
 .auth-title {
@@ -43,20 +49,38 @@
     padding: 0 18px;
     font-size: 16px;
     font-family: inherit;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.auth-field input:hover {
+    border-color: var(--text-secondary);
 }
 
 .auth-field input:focus {
-    outline: 2px solid var(--accent);
-    border-color: transparent;
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px rgba(251, 191, 36, 0.25);
 }
 
 /* Mensagem de erro embaixo do campo. min-height evita que o formulário "pule"
-   de tamanho quando o erro aparece/some (o espaço já existe, só fica vazio). */
+   de tamanho quando o erro aparece/some (o espaço já existe, só fica vazio).
+   Quando ganha texto, entra com um leve tremor — chama mais atenção que só
+   trocar a cor sozinha. */
+@keyframes rifflyShake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-4px); }
+    75% { transform: translateX(4px); }
+}
+
 .field-error {
     display: block;
     min-height: 16px;
     font-size: 13px;
     color: var(--out-of-tune);
+}
+
+.field-error:not(:empty) {
+    animation: rifflyShake 0.25s ease;
 }
 
 .auth-submit {
@@ -68,6 +92,18 @@
     font-size: 18px;
     font-weight: bold;
     cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+    box-shadow: 0 8px 20px rgba(251, 191, 36, 0.25);
+}
+
+.auth-submit:hover {
+    transform: translateY(-3px);
+    filter: brightness(1.08);
+    box-shadow: 0 12px 28px rgba(251, 191, 36, 0.35);
+}
+
+.auth-submit:active {
+    transform: translateY(0) scale(0.97);
 }
 
 .auth-switch {
@@ -79,10 +115,12 @@
 .auth-switch a {
     color: var(--accent);
     text-decoration: none;
+    transition: color 0.15s ease;
 }
 
 .auth-switch a:hover {
     text-decoration: underline;
+    color: var(--text-primary);
 }
 
 /* ===== TABLET ===== */

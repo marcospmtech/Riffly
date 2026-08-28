@@ -76,6 +76,23 @@
     border: 3px solid var(--text-primary);
     margin-top: -12px;
     box-sizing: border-box;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Quando afinado, a bolinha ganha um brilho verde pulsante — pequena
+   recompensa visual pra quem acertou o tom. */
+@keyframes rifflyPulseGlow {
+    0%, 100% { box-shadow: 0 0 10px rgba(34, 197, 94, 0.35); }
+    50% { box-shadow: 0 0 24px rgba(34, 197, 94, 0.75); }
+}
+
+.tuner-needle-line.in-tune ~ .tuner-needle-ball {
+    border-color: var(--in-tune);
+    animation: rifflyPulseGlow 1.4s ease-in-out infinite;
+}
+
+.tuner-needle-line.out-of-tune ~ .tuner-needle-ball {
+    border-color: var(--out-of-tune);
 }
 
 .note-select {

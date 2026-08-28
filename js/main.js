@@ -109,6 +109,13 @@ document.addEventListener('DOMContentLoaded', function () {
         item.appendChild(link);
         sidebarLista.appendChild(item);
 
+        var itemEditar = document.createElement('li');
+        var linkEditar = document.createElement('a');
+        linkEditar.href = 'editar.html';
+        linkEditar.textContent = 'Editar música';
+        itemEditar.appendChild(linkEditar);
+        sidebarLista.appendChild(itemEditar);
+
         montarSecaoDeExclusao(sidebarAside);
     }
 

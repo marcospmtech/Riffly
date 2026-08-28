@@ -5,7 +5,7 @@
 // (v1 -> v2 -> v3...). É o único jeito do navegador saber que precisa jogar fora
 // o cache antigo. Esquecer disso = ficar horas achando que seu código novo tem
 // bug, quando na verdade o navegador nem chegou a carregá-lo.
-var CACHE_NAME = 'riffly-cache-v16';
+var CACHE_NAME = 'riffly-cache-v18';
 
 // Lista de tudo que vale a pena deixar salvo localmente.
 var URLS_TO_CACHE = [
@@ -20,6 +20,7 @@ var URLS_TO_CACHE = [
     '/css/cifra.css',
     '/css/administrador.css',
     '/css/login.css',
+    '/css/editar.css',
 
     '/js/main.js',
     '/js/search.js',
@@ -30,6 +31,7 @@ var URLS_TO_CACHE = [
     '/js/auth.js',
     '/js/admin.js',
     '/js/cifra-view.js',
+    '/js/editar.js',
 
     '/pages/tuner_cromatic.html',
     '/pages/tuner_manual.html',
@@ -38,6 +40,7 @@ var URLS_TO_CACHE = [
     '/pages/administrador.html',
     '/pages/login.html',
     '/pages/registro.html',
+    '/pages/editar.html',
 
     '/assets/design/logo/logo.png',
     '/assets/design/icon/menu.png',

@@ -29,6 +29,36 @@ body {
 
 html {
     overflow-x: hidden;
+    scroll-behavior: smooth;
+}
+
+/* Entrada suave do conteúdo principal ao carregar cada página — nada de
+   elemento "estalando" na tela do nada. */
+@keyframes rifflyFadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes rifflyFadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes rifflySlideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 header {
@@ -38,12 +68,23 @@ header {
     background-color: var(--purple-dark);
     padding: 10px 60px;
     width: 100%;
+    position: relative;
+    z-index: 25;
 }
 
 .header-logo {
     height: 72px;
     width: 72px;
     display: block;
+    transition: transform 0.2s ease;
+}
+
+.header-logo:hover {
+    transform: scale(1.08) rotate(-4deg);
+}
+
+.header-logo:active {
+    transform: scale(0.95);
 }
 
 .search-wrapper {
@@ -57,16 +98,23 @@ header {
     width: 490px;
     background-color: #FFFFFF;
     border-radius: 22px;
-    border: none;
+    border: 2px solid transparent;
     padding-left: 20px;
     padding-right: 50px;
     font-family: inherit;
     font-size: 16px;
     color: #1a1a1a;
+    transition: box-shadow 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.search-bar:hover {
+    box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.25);
 }
 
 .search-bar:focus {
-    outline: 2px solid var(--accent);
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px rgba(251, 191, 36, 0.3);
 }
 
 .search-icon {
@@ -75,6 +123,11 @@ header {
     height: 24px;
     width: 24px;
     pointer-events: none;
+    transition: transform 0.2s ease;
+}
+
+.search-bar:focus ~ .search-icon {
+    transform: scale(1.1);
 }
 
 /* Lista de sugestões que aparece embaixo da busca (js/search.js controla o conteúdo) */
@@ -92,10 +145,12 @@ header {
     z-index: 15;
     max-height: 320px;
     overflow-y: auto;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
 }
 
 .search-results.open {
     display: block;
+    animation: rifflySlideDown 0.18s ease;
 }
 
 .search-results li a {
@@ -103,10 +158,13 @@ header {
     padding: 12px 20px;
     color: var(--text-primary);
     text-decoration: none;
+    transition: background-color 0.15s ease, padding-left 0.15s ease;
 }
 
-.search-results li a:hover {
+.search-results li a:hover,
+.search-results li a:focus-visible {
     background-color: var(--purple);
+    padding-left: 26px;
 }
 
 .search-results li .search-result-titulo {
@@ -133,6 +191,22 @@ header {
     padding: 0;
     cursor: pointer;
     display: block;
+    border-radius: 50%;
+    transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.app-select-btn:hover {
+    transform: scale(1.06);
+    filter: brightness(1.1);
+}
+
+.app-select-btn:active {
+    transform: scale(0.92);
+}
+
+.app-select-btn:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
 }
 
 .app-select-btn img {
@@ -141,8 +215,10 @@ header {
     display: block;
 }
 
+/* A sidebar fica sempre "montada" no DOM e desliza pra dentro/fora com
+   transform, em vez de aparecer/sumir seca com display. */
 .sidebar {
-    display: none;
+    display: block;
     position: fixed;
     top: 0;
     right: 0;
@@ -153,10 +229,13 @@ header {
     z-index: 20;
     padding-top: 100px;
     overflow-y: auto;
+    transform: translateX(100%);
+    transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: -16px 0 40px rgba(0, 0, 0, 0.4);
 }
 
 .sidebar.open {
-    display: block;
+    transform: translateX(0);
 }
 
 .sidebar ul {
@@ -170,10 +249,14 @@ header {
     text-decoration: none;
     font-size: 22px;
     border-bottom: 1px solid var(--border);
+    transition: background-color 0.15s ease, padding-left 0.15s ease, color 0.15s ease;
 }
 
-.sidebar li a:hover {
+.sidebar li a:hover,
+.sidebar li a:focus-visible {
     background-color: var(--purple);
+    padding-left: 40px;
+    color: var(--text-primary);
 }
 
 /* Seção "Excluir música", injetada via JS só pra usuários admin (main.js) */
@@ -183,6 +266,7 @@ header {
     display: flex;
     flex-direction: column;
     gap: 12px;
+    animation: rifflyFadeIn 0.3s ease;
 }
 
 .sidebar-section-title {
@@ -201,11 +285,17 @@ header {
     padding: 0 14px;
     font-size: 14px;
     font-family: inherit;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.sidebar-search-input:hover {
+    border-color: var(--text-secondary);
 }
 
 .sidebar-search-input:focus {
-    outline: 2px solid var(--accent);
-    border-color: transparent;
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.25);
 }
 
 .sidebar-select {
@@ -216,10 +306,20 @@ header {
     font-size: 14px;
     font-family: inherit;
     padding: 6px;
+    transition: border-color 0.2s ease;
+}
+
+.sidebar-select:focus {
+    outline: none;
+    border-color: var(--accent);
 }
 
 .sidebar-select option {
     padding: 6px 8px;
+}
+
+.sidebar-select option:checked {
+    background-color: var(--purple);
 }
 
 .sidebar-delete-btn {
@@ -231,6 +331,15 @@ header {
     font-size: 14px;
     font-weight: bold;
     cursor: pointer;
+    transition: filter 0.15s ease, transform 0.1s ease;
+}
+
+.sidebar-delete-btn:hover {
+    filter: brightness(1.12);
+}
+
+.sidebar-delete-btn:active {
+    transform: scale(0.97);
 }
 
 .sidebar-admin-section .field-error {
@@ -252,6 +361,7 @@ header {
     margin: 0 auto;
     min-height: calc(100vh - 92px);
     position: relative;
+    animation: rifflyFadeInUp 0.35s ease;
 }
 
 @media (max-width: 1024px) {
@@ -332,5 +442,18 @@ header {
 
     .page {
         min-height: calc(100vh - 128px);
+    }
+}
+
+/* Pessoas que pedem menos movimento pro sistema operacional recebem uma
+   versão sem animação — acessibilidade, não é feature decorativa opcional. */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+        scroll-behavior: auto !important;
     }
 }

@@ -16,6 +16,17 @@
     padding: 0;
     cursor: pointer;
     display: block;
+    border-radius: 50%;
+    transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.tuning-select:hover {
+    transform: scale(1.08);
+    filter: brightness(1.1);
+}
+
+.tuning-select:active {
+    transform: scale(0.94);
 }
 
 .tuning-select img {
@@ -25,7 +36,7 @@
 }
 
 .tuning-sidebar {
-    display: none;
+    display: block;
     position: fixed;
     top: 0;
     left: 0;
@@ -36,10 +47,13 @@
     z-index: 20;
     padding-top: 100px;
     overflow-y: auto;
+    transform: translateX(-100%);
+    transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 16px 0 40px rgba(0, 0, 0, 0.4);
 }
 
 .tuning-sidebar.open {
-    display: block;
+    transform: translateX(0);
 }
 
 .tuning-sidebar-title {
@@ -65,14 +79,17 @@
     font-size: 20px;
     text-align: left;
     color: var(--text-primary);
+    transition: background-color 0.15s ease, padding-left 0.15s ease;
 }
 
 .tuning-option:hover {
     background-color: var(--purple);
+    padding-left: 36px;
 }
 
 .tuning-option.active {
     background-color: var(--purple-dark);
+    box-shadow: inset 4px 0 0 var(--accent);
 }
 
 .tuning-notes {
@@ -148,10 +165,12 @@
     height: min(505px, 38vh);
     background-color: #4B4358;
     border-radius: 32px;
+    transition: background-color 0.15s ease;
 }
 
 .string-line.in-tune {
     background-color: var(--in-tune);
+    box-shadow: 0 0 16px rgba(34, 197, 94, 0.5);
 }
 
 .string-line.out-of-tune {
@@ -172,12 +191,23 @@
     font-family: inherit;
     color: #1a1a1a;
     cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.1s, border-color 0.1s, color 0.1s;
+}
+
+.string-note:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+}
+
+.string-note:active {
+    transform: translateY(-1px) scale(0.96);
 }
 
 .string-note.active {
     background-color: var(--accent);
     border-color: var(--accent);
     color: var(--background);
+    box-shadow: 0 0 0 6px rgba(251, 191, 36, 0.2);
 }
 
 @media (max-width: 1024px) {

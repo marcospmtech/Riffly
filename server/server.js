@@ -622,6 +622,251 @@ app.get('/api/cifras/:id', async function (req, res) {
 });
 
 
+app.put('/api/cifras/:id', upload.single('foto'), async function (req, res) {
+
+    var id =
+        parseInt(req.params.id, 10);
+
+
+    if (isNaN(id)) {
+
+        return res.status(400).json({
+
+            erro: 'Id inválido.'
+
+        });
+
+    }
+
+
+    var titulo =
+        (req.body.titulo || '').trim();
+
+
+    if (!titulo) {
+
+        return res.status(400).json({
+
+            erro: 'Digite o título da música.',
+
+            campo: 'titulo'
+
+        });
+
+    }
+
+
+    var {
+        data: cifraAtual,
+        error: erroBusca
+    } = await supabase
+
+        .from('cifras')
+
+        .select('foto_arquivo')
+
+        .eq('id', id)
+
+        .maybeSingle();
+
+
+    if (erroBusca) {
+
+        console.error(
+            'Erro ao buscar cifra pra editar:',
+            erroBusca
+        );
+
+        return res.status(500).json({
+
+            erro: 'Erro ao editar cifra.'
+
+        });
+
+    }
+
+
+    if (!cifraAtual) {
+
+        return res.status(404).json({
+
+            erro: 'Cifra não encontrada.'
+
+        });
+
+    }
+
+
+    var autor =
+        (req.body.autor || '').trim();
+
+
+    var album =
+        (req.body.album || '').trim();
+
+
+    var bpm =
+        parseInt(req.body.bpm, 10);
+
+
+    if (isNaN(bpm)) {
+
+        bpm = null;
+
+    }
+
+
+    var youtubeLink =
+        (req.body.youtube || '').trim();
+
+
+    var afinacao =
+        (req.body.afinacao || '').trim() || null;
+
+
+    // Se não mandar foto nova, mantém a que já estava salva — editar só o
+    // título, por exemplo, não pode apagar a foto que já existia.
+    var fotoArquivo =
+        cifraAtual.foto_arquivo;
+
+
+    if (req.file) {
+
+        var extensao =
+            path.extname(req.file.originalname);
+
+
+        var nomeUnico =
+            crypto.randomBytes(16).toString('hex') +
+            extensao;
+
+
+        var {
+            error: erroUpload
+        } = await supabase
+
+            .storage
+
+            .from('uploads')
+
+            .upload(
+                nomeUnico,
+                req.file.buffer,
+                {
+
+                    contentType:
+                        req.file.mimetype,
+
+                    upsert: false
+
+                }
+            );
+
+
+        if (erroUpload) {
+
+            console.error(
+                'Erro ao enviar imagem:',
+                erroUpload
+            );
+
+            return res.status(500).json({
+
+                erro: 'Erro ao enviar imagem.'
+
+            });
+
+        }
+
+
+        var {
+            data: urlPublica
+        } = supabase
+
+            .storage
+
+            .from('uploads')
+
+            .getPublicUrl(nomeUnico);
+
+
+        // Só apaga a foto antiga DEPOIS que a nova já subiu com sucesso —
+        // assim, se o upload novo falhar no meio do caminho, a música não
+        // fica sem nenhuma foto.
+        var fotoAntiga = fotoArquivo;
+
+        fotoArquivo = urlPublica.publicUrl;
+
+        if (fotoAntiga) {
+
+            var nomeAntigo =
+                fotoAntiga.split('/').pop();
+
+            await supabase
+
+                .storage
+
+                .from('uploads')
+
+                .remove([nomeAntigo]);
+
+        }
+
+    }
+
+
+    var {
+        error: erroUpdate
+    } = await supabase
+
+        .from('cifras')
+
+        .update({
+
+            titulo: titulo,
+
+            autor: autor,
+
+            album: album,
+
+            bpm: bpm,
+
+            afinacao: afinacao,
+
+            youtube_link: youtubeLink,
+
+            foto_arquivo: fotoArquivo
+
+        })
+
+        .eq('id', id);
+
+
+    if (erroUpdate) {
+
+        console.error(
+            'Erro ao atualizar cifra:',
+            erroUpdate
+        );
+
+        return res.status(500).json({
+
+            erro: 'Erro ao salvar alterações.'
+
+        });
+
+    }
+
+
+    res.json({
+
+        ok: true
+
+    });
+
+});
+
+
 app.delete('/api/cifras/:id', async function (req, res) {
 
     var id =

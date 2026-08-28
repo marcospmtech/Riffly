@@ -34,6 +34,12 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cifra-content:hover {
+    border-color: var(--purple);
+    box-shadow: 0 12px 32px rgba(124, 58, 237, 0.18);
 }
 
 /* Foto da cifra (única coisa que o Administrador faz upload) */
@@ -42,6 +48,11 @@
     max-height: 640px;
     border-radius: 12px;
     object-fit: contain;
+    transition: transform 0.25s ease;
+}
+
+.cifra-content:hover .cifra-foto {
+    transform: scale(1.015);
 }
 
 /* "Carregando..." / "Cifra não encontrada" enquanto o js/cifra-view.js busca os dados */
@@ -62,6 +73,11 @@
     display: flex;
     flex-direction: column;
     gap: 24px;
+    transition: border-color 0.2s ease;
+}
+
+.cifra-card:hover {
+    border-color: var(--purple);
 }
 
 .cifra-player {
@@ -87,6 +103,17 @@
     text-decoration: none;
     font-size: 32px;
     box-sizing: border-box;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+}
+
+.cifra-action:hover {
+    transform: translateY(-3px);
+    filter: brightness(1.08);
+    box-shadow: 0 10px 24px rgba(251, 191, 36, 0.3);
+}
+
+.cifra-action:active {
+    transform: translateY(0) scale(0.97);
 }
 
 @media (max-width: 1024px) {
