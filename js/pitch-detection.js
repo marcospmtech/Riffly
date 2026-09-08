@@ -21,74 +21,96 @@ window.RifflyPitch = (function () {
         return { midiNote: midiNote, noteName: noteName, cents: cents };
     }
 
-    function autoCorrelate(buf, sampleRate) {
-        var SIZE = buf.length;
-        var rms = 0;
+    // Detecção de tom pelo algoritmo YIN (De Cheveigné & Kawahara, 2002).
+    //
+    // Por que não autocorrelação simples? Porque um instrumento real tem
+    // harmônicos fortes (2ª, 3ª frequência da nota) que às vezes "enganam"
+    // a autocorrelação, fazendo ela travar no dobro ou na metade da
+    // frequência certa — o chamado "erro de oitava". O YIN resolve isso
+    // com uma etapa de normalização cumulativa que penaliza exatamente
+    // esses picos espúrios, o que o torna muito mais confiável pra
+    // instrumentos musicais (é o algoritmo usado por afinadores digitais
+    // de verdade, não só um exemplo didático).
+    function detectarTom(buf, sampleRate) {
+        var TAMANHO = buf.length;
+        var JANELA = Math.floor(TAMANHO / 2); // metade do buffer vira a janela de integração
+        var LIMIAR = 0.15; // quanto menor, mais exigente (mais rejeição de ruído)
 
-        for (var i = 0; i < SIZE; i++) {
+        // Frequências fora do alcance de um violão não interessam — limitar a
+        // busca aqui também acelera bastante o cálculo (de ~O(n²) irrestrito
+        // pra uma faixa bem menor).
+        var FREQ_MINIMA = 60;
+        var FREQ_MAXIMA = 1400;
+        var tauMinimo = Math.floor(sampleRate / FREQ_MAXIMA);
+        var tauMaximo = Math.min(JANELA - 1, Math.ceil(sampleRate / FREQ_MINIMA));
+
+        var rms = 0;
+        for (var i = 0; i < TAMANHO; i++) {
             rms += buf[i] * buf[i];
         }
-        rms = Math.sqrt(rms / SIZE);
+        rms = Math.sqrt(rms / TAMANHO);
 
+        // Sinal fraco demais (silêncio, ruído de fundo): nem tenta detectar.
         if (rms < 0.01) {
             return -1;
         }
 
-        var r1 = 0;
-        var r2 = SIZE - 1;
-        var threshold = 0.2;
+        // Passo 1: função de diferença — o quanto o sinal "se parece menos"
+        // consigo mesmo a cada deslocamento (tau) testado.
+        var diferenca = new Float64Array(tauMaximo + 1);
+        for (var tau = 1; tau <= tauMaximo; tau++) {
+            var soma = 0;
+            for (var j = 0; j < JANELA; j++) {
+                var delta = buf[j] - buf[j + tau];
+                soma += delta * delta;
+            }
+            diferenca[tau] = soma;
+        }
 
-        for (var i = 0; i < SIZE / 2; i++) {
-            if (Math.abs(buf[i]) < threshold) {
-                r1 = i;
+        // Passo 2: normalização cumulativa da média. É essa divisão pela
+        // média acumulada que penaliza os falsos positivos de harmônicos e
+        // evita o erro de oitava.
+        var normalizada = new Float64Array(tauMaximo + 1);
+        normalizada[0] = 1;
+        var somaAcumulada = 0;
+        for (var tau = 1; tau <= tauMaximo; tau++) {
+            somaAcumulada += diferenca[tau];
+            normalizada[tau] = diferenca[tau] * tau / somaAcumulada;
+        }
+
+        // Passo 3: acha o primeiro vale que fica abaixo do limiar (dentro da
+        // faixa de frequência de um violão) — não necessariamente o menor
+        // valor absoluto, e sim o primeiro "bom o suficiente", que é o que
+        // realmente identifica o período fundamental certo.
+        var tauEscolhido = -1;
+        for (var tau = tauMinimo; tau <= tauMaximo; tau++) {
+            if (normalizada[tau] < LIMIAR) {
+                while (tau + 1 <= tauMaximo && normalizada[tau + 1] < normalizada[tau]) {
+                    tau++;
+                }
+                tauEscolhido = tau;
                 break;
             }
         }
-        for (var i = 1; i < SIZE / 2; i++) {
-            if (Math.abs(buf[SIZE - i]) < threshold) {
-                r2 = SIZE - i;
-                break;
+
+        if (tauEscolhido === -1) {
+            return -1; // nenhum tom claro o suficiente dentro da faixa esperada
+        }
+
+        // Passo 4: interpolação parabólica, pra não ficar preso a um valor
+        // inteiro de amostra (senão a frequência "pula" em degraus).
+        var tauFinal = tauEscolhido;
+        if (tauEscolhido > tauMinimo && tauEscolhido < tauMaximo) {
+            var s0 = normalizada[tauEscolhido - 1];
+            var s1 = normalizada[tauEscolhido];
+            var s2 = normalizada[tauEscolhido + 1];
+            var divisor = 2 * s1 - s2 - s0;
+            if (divisor !== 0) {
+                tauFinal = tauEscolhido + (s2 - s0) / (2 * divisor);
             }
         }
 
-        var trimmed = buf.slice(r1, r2);
-        var trimmedSize = trimmed.length;
-
-        var c = new Array(trimmedSize).fill(0);
-        for (var i = 0; i < trimmedSize; i++) {
-            for (var j = 0; j < trimmedSize - i; j++) {
-                c[i] += trimmed[j] * trimmed[j + i];
-            }
-        }
-
-        var d = 0;
-        while (c[d] > c[d + 1]) {
-            d++;
-        }
-
-        var maxVal = -1;
-        var maxPos = -1;
-        for (var i = d; i < trimmedSize; i++) {
-            if (c[i] > maxVal) {
-                maxVal = c[i];
-                maxPos = i;
-            }
-        }
-
-        var T0 = maxPos;
-
-        if (T0 > 0 && T0 < trimmedSize - 1) {
-            var x1 = c[T0 - 1];
-            var x2 = c[T0];
-            var x3 = c[T0 + 1];
-            var a = (x1 + x3 - 2 * x2) / 2;
-            var b = (x3 - x1) / 2;
-            if (a) {
-                T0 = T0 - b / (2 * a);
-            }
-        }
-
-        return sampleRate / T0;
+        return sampleRate / tauFinal;
     }
 
     function listen(onFrequency, onError) {
@@ -108,7 +130,7 @@ window.RifflyPitch = (function () {
 
                 function loop() {
                     analyser.getFloatTimeDomainData(buffer);
-                    var frequency = autoCorrelate(buffer, audioContext.sampleRate);
+                    var frequency = detectarTom(buffer, audioContext.sampleRate);
                     onFrequency(frequency);
                     requestAnimationFrame(loop);
                 }

@@ -226,7 +226,7 @@ header {
     width: 320px;
     background-color: var(--card);
     border-left: 1px solid var(--border);
-    z-index: 20;
+    z-index: 30;
     padding-top: 100px;
     overflow-y: auto;
     transform: translateX(100%);

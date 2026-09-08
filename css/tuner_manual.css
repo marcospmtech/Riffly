@@ -44,7 +44,7 @@
     width: 360px;
     background-color: var(--card);
     border-right: 1px solid var(--border);
-    z-index: 20;
+    z-index: 30;
     padding-top: 100px;
     overflow-y: auto;
     transform: translateX(-100%);
