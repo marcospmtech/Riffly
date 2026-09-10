@@ -5,7 +5,7 @@
 // (v1 -> v2 -> v3...). É o único jeito do navegador saber que precisa jogar fora
 // o cache antigo. Esquecer disso = ficar horas achando que seu código novo tem
 // bug, quando na verdade o navegador nem chegou a carregá-lo.
-var CACHE_NAME = 'riffly-cache-v18';
+var CACHE_NAME = 'riffly-cache-v19';
 
 // Lista de tudo que vale a pena deixar salvo localmente.
 var URLS_TO_CACHE = [
@@ -32,6 +32,8 @@ var URLS_TO_CACHE = [
     '/js/admin.js',
     '/js/cifra-view.js',
     '/js/editar.js',
+    '/js/supabase-client.js',
+    '/js/google-auth.js',
 
     '/pages/tuner_cromatic.html',
     '/pages/tuner_manual.html',
@@ -48,7 +50,8 @@ var URLS_TO_CACHE = [
     '/assets/design/icon/metronome.png',
     '/assets/design/icon/settings_tuner.png',
     '/assets/design/icon/settings_metronome.png',
-    '/assets/design/icon/upload.svg'
+    '/assets/design/icon/upload.svg',
+    '/assets/design/icon/google.svg'
 ];
 
 // "install" roda uma vez, quando o navegador baixa o service worker pela primeira vez
