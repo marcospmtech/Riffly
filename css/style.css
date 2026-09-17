@@ -32,8 +32,6 @@ html {
     scroll-behavior: smooth;
 }
 
-/* Entrada suave do conteúdo principal ao carregar cada página — nada de
-   elemento "estalando" na tela do nada. */
 @keyframes rifflyFadeInUp {
     from {
         opacity: 0;
@@ -130,7 +128,6 @@ header {
     transform: scale(1.1);
 }
 
-/* Lista de sugestões que aparece embaixo da busca (js/search.js controla o conteúdo) */
 .search-results {
     display: none;
     position: absolute;
@@ -215,8 +212,6 @@ header {
     display: block;
 }
 
-/* A sidebar fica sempre "montada" no DOM e desliza pra dentro/fora com
-   transform, em vez de aparecer/sumir seca com display. */
 .sidebar {
     display: block;
     position: fixed;
@@ -259,7 +254,6 @@ header {
     color: var(--text-primary);
 }
 
-/* Seção "Excluir música", injetada via JS só pra usuários admin (main.js) */
 .sidebar-admin-section {
     padding: 24px 32px;
     border-top: 1px solid var(--border);
@@ -347,8 +341,6 @@ header {
     font-size: 12px;
 }
 
-/* Base da mensagem de erro em vermelho, usada em vários formulários do site
-   (login, cadastro, administrador, e agora também a seção de exclusão na sidebar) */
 .field-error {
     display: block;
     min-height: 16px;
@@ -445,8 +437,6 @@ header {
     }
 }
 
-/* Pessoas que pedem menos movimento pro sistema operacional recebem uma
-   versão sem animação — acessibilidade, não é feature decorativa opcional. */
 @media (prefers-reduced-motion: reduce) {
     *,
     *::before,

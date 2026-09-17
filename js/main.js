@@ -119,9 +119,6 @@ document.addEventListener('DOMContentLoaded', function () {
         montarSecaoDeExclusao(sidebarAside);
     }
 
-    // Seção "Excluir música", só aparece pra admin (chamada de dentro da função
-    // acima, que já confirmou o cargo). Busca em /api/cifras (o mesmo endpoint
-    // usado no resto do site), preenche um <select> pesquisável e exclui via DELETE.
     function montarSecaoDeExclusao(sidebarAside) {
         var secao = document.createElement('div');
         secao.className = 'sidebar-admin-section';
@@ -155,8 +152,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
         }
 
-        // Filtro simples: esconde (não remove) as opções que não batem com o texto
-        // digitado. "hidden" em <option> é respeitado pelos navegadores modernos.
         filtroInput.addEventListener('input', function () {
             var termo = filtroInput.value.trim().toLowerCase();
             Array.prototype.forEach.call(selectEl.options, function (opcao) {

@@ -724,8 +724,6 @@ app.put('/api/cifras/:id', upload.single('foto'), async function (req, res) {
         (req.body.afinacao || '').trim() || null;
 
 
-    // Se não mandar foto nova, mantém a que já estava salva — editar só o
-    // título, por exemplo, não pode apagar a foto que já existia.
     var fotoArquivo =
         cifraAtual.foto_arquivo;
 
@@ -790,9 +788,6 @@ app.put('/api/cifras/:id', upload.single('foto'), async function (req, res) {
             .getPublicUrl(nomeUnico);
 
 
-        // Só apaga a foto antiga DEPOIS que a nova já subiu com sucesso —
-        // assim, se o upload novo falhar no meio do caminho, a música não
-        // fica sem nenhuma foto.
         var fotoAntiga = fotoArquivo;
 
         fotoArquivo = urlPublica.publicUrl;
@@ -952,9 +947,6 @@ app.delete('/api/cifras/:id', async function (req, res) {
     }
 
 
-    // A foto é guardada no bucket do Supabase como uma URL pública completa;
-    // só o nome do arquivo (último pedaço da URL) é o que o storage precisa
-    // pra saber o que apagar.
     if (cifra.foto_arquivo) {
 
         var nomeArquivo =

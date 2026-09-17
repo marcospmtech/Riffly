@@ -5,7 +5,6 @@
     padding: 60px 20px;
 }
 
-/* Card centralizado com o <form> dentro */
 .auth-card {
     width: 100%;
     max-width: 440px;
@@ -62,10 +61,6 @@
     box-shadow: 0 0 0 4px rgba(251, 191, 36, 0.25);
 }
 
-/* Mensagem de erro embaixo do campo. min-height evita que o formulário "pule"
-   de tamanho quando o erro aparece/some (o espaço já existe, só fica vazio).
-   Quando ganha texto, entra com um leve tremor — chama mais atenção que só
-   trocar a cor sozinha. */
 @keyframes rifflyShake {
     0%, 100% { transform: translateX(0); }
     25% { transform: translateX(-4px); }
@@ -106,7 +101,6 @@
     transform: translateY(0) scale(0.97);
 }
 
-/* Divisor "ou" entre o login por senha e o login com Google */
 .auth-divider {
     display: flex;
     align-items: center;
@@ -123,9 +117,6 @@
     background-color: var(--border);
 }
 
-/* Botão "Entrar com Google": fundo claro de propósito — é a convenção visual
-   que o próprio Google recomenda pros botões de login, contrasta com o resto
-   do site (que é todo escuro) e ajuda a pessoa a reconhecer o botão na hora. */
 .auth-google-btn {
     height: 52px;
     background-color: #FFFFFF;
@@ -173,14 +164,12 @@
     color: var(--text-primary);
 }
 
-/* ===== TABLET ===== */
 @media (max-width: 1024px) {
     .auth-card {
         padding: 40px 32px;
     }
 }
 
-/* ===== CELULAR ===== */
 @media (max-width: 600px) {
     .auth-page {
         padding: 40px 16px;

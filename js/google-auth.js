@@ -1,18 +1,11 @@
-// Login com Google via Supabase Auth. Roda em paralelo ao login por
-// e-mail/senha (js/auth.js) — são dois sistemas independentes que só se
-// encontram no final, gravando o mesmo formato em localStorage('rifflyUsuario'),
-// que é o que o main.js lê pra decidir se mostra a área de admin na sidebar.
 document.addEventListener('DOMContentLoaded', function () {
     var botaoGoogle = document.getElementById('googleLoginBtn');
     var statusEl = document.getElementById('googleLoginStatus');
 
     if (!botaoGoogle) {
-        return; // essa página não tem o botão do Google
+        return;
     }
 
-    // Clique no botão: manda a pessoa pro fluxo de login do Google. O Supabase
-    // cuida do redirecionamento de ida e volta sozinho — a gente só precisa
-    // dizer pra onde voltar depois (a própria página de login).
     botaoGoogle.addEventListener('click', async function () {
         var { error } = await supabaseClient.auth.signInWithOAuth({
             provider: 'google',
@@ -26,8 +19,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // Ao voltar do Google, o Supabase já processou o redirecionamento e criou
-    // uma sessão sozinho. Aqui só verificamos se essa sessão existe.
     verificarSessaoDoGoogle();
 
     async function verificarSessaoDoGoogle() {
@@ -35,14 +26,11 @@ document.addEventListener('DOMContentLoaded', function () {
         var sessao = data.session;
 
         if (!sessao) {
-            return; // pessoa ainda não logou com Google nessa aba
+            return;
         }
 
         var usuario = sessao.user;
 
-        // Garante que existe uma linha em "profiles" pra esse usuário. Como a
-        // policy de insert só deixa criar a PRÓPRIA linha (auth.uid() = id),
-        // isso é seguro de rodar direto do navegador.
         var { data: perfilExistente } = await supabaseClient
             .from('profiles')
             .select('cargo, nome')
@@ -70,8 +58,6 @@ document.addEventListener('DOMContentLoaded', function () {
             perfil = perfilCriado;
         }
 
-        // Mesmo formato que js/auth.js já grava no login por e-mail/senha —
-        // é assim que o main.js consegue tratar os dois tipos de login igual.
         localStorage.setItem('rifflyUsuario', JSON.stringify({
             nome: perfil.nome,
             cargo: perfil.cargo

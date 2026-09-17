@@ -1,13 +1,5 @@
-// Service worker do Riffly: guarda os arquivos do site num cache local pra ele
-// abrir mesmo sem internet (depois da primeira visita) e poder ser "instalado".
-//
-// IMPORTANTE: sempre que você alterar HTML/CSS/JS do site, mude esse número
-// (v1 -> v2 -> v3...). É o único jeito do navegador saber que precisa jogar fora
-// o cache antigo. Esquecer disso = ficar horas achando que seu código novo tem
-// bug, quando na verdade o navegador nem chegou a carregá-lo.
-var CACHE_NAME = 'riffly-cache-v19';
+var CACHE_NAME = 'riffly-cache-v20';
 
-// Lista de tudo que vale a pena deixar salvo localmente.
 var URLS_TO_CACHE = [
     '/',
     '/index.html',
@@ -54,8 +46,6 @@ var URLS_TO_CACHE = [
     '/assets/design/icon/google.svg'
 ];
 
-// "install" roda uma vez, quando o navegador baixa o service worker pela primeira vez
-// (ou quando o CACHE_NAME muda, indicando uma versão nova). Aqui a gente pré-carrega tudo.
 self.addEventListener('install', function (event) {
     event.waitUntil(
         caches.open(CACHE_NAME).then(function (cache) {
@@ -65,8 +55,6 @@ self.addEventListener('install', function (event) {
     self.skipWaiting();
 });
 
-// "activate" roda depois do install e é o momento certo de apagar caches de versões
-// antigas (se algum dia o CACHE_NAME virar "riffly-cache-v2", o v1 é descartado aqui).
 self.addEventListener('activate', function (event) {
     event.waitUntil(
         caches.keys().then(function (cacheNames) {

@@ -21,24 +21,11 @@ window.RifflyPitch = (function () {
         return { midiNote: midiNote, noteName: noteName, cents: cents };
     }
 
-    // Detecção de tom pelo algoritmo YIN (De Cheveigné & Kawahara, 2002).
-    //
-    // Por que não autocorrelação simples? Porque um instrumento real tem
-    // harmônicos fortes (2ª, 3ª frequência da nota) que às vezes "enganam"
-    // a autocorrelação, fazendo ela travar no dobro ou na metade da
-    // frequência certa — o chamado "erro de oitava". O YIN resolve isso
-    // com uma etapa de normalização cumulativa que penaliza exatamente
-    // esses picos espúrios, o que o torna muito mais confiável pra
-    // instrumentos musicais (é o algoritmo usado por afinadores digitais
-    // de verdade, não só um exemplo didático).
     function detectarTom(buf, sampleRate) {
         var TAMANHO = buf.length;
-        var JANELA = Math.floor(TAMANHO / 2); // metade do buffer vira a janela de integração
-        var LIMIAR = 0.15; // quanto menor, mais exigente (mais rejeição de ruído)
+        var JANELA = Math.floor(TAMANHO / 2);
+        var LIMIAR = 0.15;
 
-        // Frequências fora do alcance de um violão não interessam — limitar a
-        // busca aqui também acelera bastante o cálculo (de ~O(n²) irrestrito
-        // pra uma faixa bem menor).
         var FREQ_MINIMA = 60;
         var FREQ_MAXIMA = 1400;
         var tauMinimo = Math.floor(sampleRate / FREQ_MAXIMA);
@@ -50,13 +37,10 @@ window.RifflyPitch = (function () {
         }
         rms = Math.sqrt(rms / TAMANHO);
 
-        // Sinal fraco demais (silêncio, ruído de fundo): nem tenta detectar.
-        if (rms < 0.01) {
+        if (rms < 0.003) {
             return -1;
         }
 
-        // Passo 1: função de diferença — o quanto o sinal "se parece menos"
-        // consigo mesmo a cada deslocamento (tau) testado.
         var diferenca = new Float64Array(tauMaximo + 1);
         for (var tau = 1; tau <= tauMaximo; tau++) {
             var soma = 0;
@@ -67,9 +51,6 @@ window.RifflyPitch = (function () {
             diferenca[tau] = soma;
         }
 
-        // Passo 2: normalização cumulativa da média. É essa divisão pela
-        // média acumulada que penaliza os falsos positivos de harmônicos e
-        // evita o erro de oitava.
         var normalizada = new Float64Array(tauMaximo + 1);
         normalizada[0] = 1;
         var somaAcumulada = 0;
@@ -78,10 +59,6 @@ window.RifflyPitch = (function () {
             normalizada[tau] = diferenca[tau] * tau / somaAcumulada;
         }
 
-        // Passo 3: acha o primeiro vale que fica abaixo do limiar (dentro da
-        // faixa de frequência de um violão) — não necessariamente o menor
-        // valor absoluto, e sim o primeiro "bom o suficiente", que é o que
-        // realmente identifica o período fundamental certo.
         var tauEscolhido = -1;
         for (var tau = tauMinimo; tau <= tauMaximo; tau++) {
             if (normalizada[tau] < LIMIAR) {
@@ -94,11 +71,9 @@ window.RifflyPitch = (function () {
         }
 
         if (tauEscolhido === -1) {
-            return -1; // nenhum tom claro o suficiente dentro da faixa esperada
+            return -1;
         }
 
-        // Passo 4: interpolação parabólica, pra não ficar preso a um valor
-        // inteiro de amostra (senão a frequência "pula" em degraus).
         var tauFinal = tauEscolhido;
         if (tauEscolhido > tauMinimo && tauEscolhido < tauMaximo) {
             var s0 = normalizada[tauEscolhido - 1];
@@ -119,7 +94,14 @@ window.RifflyPitch = (function () {
             return;
         }
 
-        navigator.mediaDevices.getUserMedia({ audio: true, video: false })
+        navigator.mediaDevices.getUserMedia({
+            audio: {
+                echoCancellation: false,
+                noiseSuppression: false,
+                autoGainControl: false
+            },
+            video: false
+        })
             .then(function (stream) {
                 var audioContext = new (window.AudioContext || window.webkitAudioContext)();
                 var source = audioContext.createMediaStreamSource(stream);

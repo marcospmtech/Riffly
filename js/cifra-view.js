@@ -130,13 +130,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     .filter(Boolean)
                     .join(' — ');
 
-
-            /*
-                IMAGEM
-
-                Agora foto_arquivo já contém
-                a URL pública do Supabase Storage.
-            */
             if (cifra.foto_arquivo) {
 
                 fotoEl.src = cifra.foto_arquivo;

@@ -1,5 +1,3 @@
-// Página Editar música: busca uma música existente, preenche o formulário com
-// os dados atuais, e salva as alterações via PUT (em vez de criar uma nova).
 document.addEventListener('DOMContentLoaded', function () {
     var buscaInput = document.getElementById('editarBusca');
     var resultadosEl = document.getElementById('editarResultados');
@@ -19,15 +17,12 @@ document.addEventListener('DOMContentLoaded', function () {
     var erroEl = document.getElementById('editarErro');
 
     if (!buscaInput || !form) {
-        return; // não é a página de editar
+        return;
     }
 
     var DEBOUNCE_MS = 300;
     var debounceTimer = null;
     var requisicaoAtual = 0;
-
-    // ---- Busca (igual em espírito ao js/search.js, mas clicar num resultado
-    // carrega os dados no formulário em vez de navegar pra outra página) ----
 
     function limparResultados() {
         resultadosEl.innerHTML = '';
@@ -114,7 +109,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-    // ---- Carrega os dados da música escolhida dentro do formulário ----
 
     function resetarPreview() {
         preview.style.display = 'none';
@@ -127,7 +121,7 @@ document.addEventListener('DOMContentLoaded', function () {
         statusEl.classList.remove('sucesso');
         form.style.display = 'none';
         erroEl.textContent = '';
-        fileInput.value = ''; // limpa qualquer foto que tivesse sido escolhida antes de trocar de música
+        fileInput.value = '';
 
         fetch('/api/cifras/' + encodeURIComponent(id))
             .then(function (resposta) {
@@ -168,7 +162,6 @@ document.addEventListener('DOMContentLoaded', function () {
             });
     }
 
-    // Pré-visualização instantânea se a pessoa escolher uma foto nova
     fileInput.addEventListener('change', function () {
         if (!fileInput.files || !fileInput.files[0]) {
             return;
@@ -183,7 +176,6 @@ document.addEventListener('DOMContentLoaded', function () {
         reader.readAsDataURL(fileInput.files[0]);
     });
 
-    // ---- Salvar (PUT) ----
 
     form.addEventListener('submit', function (event) {
         event.preventDefault();

@@ -80,8 +80,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     buildPicker();
 
-    // Se a URL vier com ?bpm=60 (o botão "Ir para o Metrônomo" da página de
-    // cifra monta esse link), começa já com esse BPM em vez do padrão (120).
     var bpmDaUrl = parseInt(new URLSearchParams(window.location.search).get('bpm'), 10);
     var bpmInicial = (!isNaN(bpmDaUrl) && bpmDaUrl >= MIN_BPM && bpmDaUrl <= MAX_BPM) ? bpmDaUrl : DEFAULT_BPM;
 
